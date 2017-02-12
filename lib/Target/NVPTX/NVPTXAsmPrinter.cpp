@@ -919,6 +919,11 @@ bool NVPTXAsmPrinter::doInitialization(Module &M) {
   if (TM.getTargetTriple().getOS() != Triple::NVCL)
     recordAndEmitFilenames(M);
 
+  // Emit Dwarf information
+  if (MAI->doesSupportDebugInformation()) {
+    setupDwarf(M);
+  }
+
   GlobalsEmitted = false;
     
   return false; // success

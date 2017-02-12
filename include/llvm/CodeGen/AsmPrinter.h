@@ -160,6 +160,8 @@ private:
 protected:
   explicit AsmPrinter(TargetMachine &TM, std::unique_ptr<MCStreamer> Streamer);
 
+  void setupDwarf(Module &M);
+
 public:
   ~AsmPrinter() override;
 

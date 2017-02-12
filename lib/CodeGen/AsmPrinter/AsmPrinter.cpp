@@ -257,10 +257,7 @@ bool AsmPrinter::doInitialization(Module &M) {
                                      CodeViewLineTablesGroupDescription));
     }
     if (!EmitCodeView || MMI->getModule()->getDwarfVersion()) {
-      DD = new DwarfDebug(this, &M);
-      DD->beginModule();
-      Handlers.push_back(HandlerInfo(DD, DbgTimerName, DbgTimerDescription,
-                                     DWARFGroupName, DWARFGroupDescription));
+      setupDwarf(M);
     }
   }
 
@@ -313,6 +310,13 @@ bool AsmPrinter::doInitialization(Module &M) {
     Handlers.push_back(HandlerInfo(ES, EHTimerName, EHTimerDescription,
                                    DWARFGroupName, DWARFGroupDescription));
   return false;
+}
+
+void AsmPrinter::setupDwarf(Module &M) {
+  DD = new DwarfDebug(this, &M);
+  DD->beginModule();
+  Handlers.push_back(HandlerInfo(DD, DbgTimerName, DbgTimerDescription,
+        DWARFGroupName, DWARFGroupDescription));
 }
 
 static bool canBeHidden(const GlobalValue *GV, const MCAsmInfo &MAI) {
