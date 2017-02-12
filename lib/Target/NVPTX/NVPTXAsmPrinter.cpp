@@ -198,8 +198,6 @@ void NVPTXAsmPrinter::emitLineNumberAsDotLoc(const MachineInstr &MI) {
 void NVPTXAsmPrinter::EmitInstruction(const MachineInstr *MI) {
   SmallString<128> Str;
   raw_svector_ostream OS(Str);
-  if (static_cast<NVPTXTargetMachine &>(TM).getDrvInterface() == NVPTX::CUDA)
-    emitLineNumberAsDotLoc(*MI);
 
   MCInst Inst;
   lowerToMCInst(MI, Inst);
@@ -914,10 +912,6 @@ bool NVPTXAsmPrinter::doInitialization(Module &M) {
     OutStreamer->AddComment("End of file scope inline assembly");
     OutStreamer->AddBlankLine();
   }
-
-  // If we're not NVCL we're CUDA, go ahead and emit filenames.
-  if (TM.getTargetTriple().getOS() != Triple::NVCL)
-    recordAndEmitFilenames(M);
 
   // Emit Dwarf information
   if (MAI->doesSupportDebugInformation()) {
