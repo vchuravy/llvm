@@ -27,6 +27,7 @@ class NVPTXSection final : public MCSection {
 
 public:
   NVPTXSection(SectionVariant V, SectionKind K) : MCSection(V, K, nullptr) {}
+  NVPTXSection(SectionVariant V, SectionKind K, MCSymbol* S) : MCSection(V, K, S) {}
   ~NVPTXSection() = default;
 
   /// Override this as NVPTX has its own way of printing switching

@@ -11,6 +11,7 @@
 #define LLVM_LIB_TARGET_NVPTX_NVPTXTARGETOBJECTFILE_H
 
 #include "NVPTXSection.h"
+#include "llvm/MC/MCContext.h"
 #include "llvm/MC/MCSection.h"
 #include "llvm/MC/SectionKind.h"
 #include "llvm/Target/TargetLoweringObjectFile.h"
@@ -60,9 +61,9 @@ public:
     EHFrameSection =
         new NVPTXSection(MCSection::SV_ELF, SectionKind::getMetadata());
     DwarfAbbrevSection =
-        new NVPTXSection(MCSection::SV_ELF, SectionKind::getMetadata());
+        new NVPTXSection(MCSection::SV_ELF, SectionKind::getMetadata(), ctx.getOrCreateSymbol(".debug_abbrev"));
     DwarfInfoSection =
-        new NVPTXSection(MCSection::SV_ELF, SectionKind::getMetadata());
+        new NVPTXSection(MCSection::SV_ELF, SectionKind::getMetadata(), ctx.getOrCreateSymbol(".debug_info"));
     DwarfLineSection =
         new NVPTXSection(MCSection::SV_ELF, SectionKind::getMetadata());
     DwarfFrameSection =
