@@ -646,8 +646,7 @@ bool IfConverter::CountDuplicatedInstructions(
     if (TII->DefinesPredicate(*TIB, PredDefs))
       return false;
     // If we get all the way to the branch instructions, don't count them.
-    // We treat returns as unconditional branches
-    if (!(TIB->isBranch() || TIB->isReturn()))
+    if (!TIB->isBranch())
       ++Dups1;
     ++TIB;
     ++FIB;
@@ -686,7 +685,7 @@ bool IfConverter::CountDuplicatedInstructions(
       break;
     // We have to verify that any branch instructions are the same, and then we
     // don't count them toward the # of duplicate instructions.
-    if (!(RTIE->isBranch() || RTIE->isReturn()))
+    if (!RTIE->isBranch())
       ++Dups2;
     ++RTIE;
     ++RFIE;
