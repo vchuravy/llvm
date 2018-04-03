@@ -1723,11 +1723,15 @@ bool IfConverter::IfConvertDiamondCommon(
   // Skip past the dups on each side separately since there may be
   // differing dbg_value entries.
   for (unsigned i = 0; i < NumDups1; ++DI1) {
+    if (DI1 == MBB1.end())
+      break;
     if (!DI1->isDebugValue())
       ++i;
   }
   while (NumDups1 != 0) {
     ++DI2;
+    if (DI2 == MBB2.end())
+      break;
     if (!DI2->isDebugValue())
       --NumDups1;
   }
@@ -1762,6 +1766,12 @@ bool IfConverter::IfConvertDiamondCommon(
   }
   MBB1.erase(DI1, MBB1.end());
 
+  // Identical blocks, already moved all the instructions up.
+  if (MBB1.empty() && MBB2.empty()) {
+    BBI.BB->removeSuccessor(&MBB1, true);
+    BBI.BB->removeSuccessor(&MBB2, true);
+    return true;
+  }
   DI2 = BBI2->BB->end();
   // The branches have been checked to match. Skip over the branch in the false
   // block so that we don't try to predicate it.
