@@ -22,7 +22,7 @@ body:           |
     BLR8 implicit $lr8, implicit $rm, implicit $x3
 ...
 
-# Diamond testcase with branches terminating in returns,
+# Diamond testcase with equivalent branches terminating in returns.
 
 # CHECK: body:             |          
 # CHECK:  bb.0:
@@ -30,7 +30,5 @@ body:           |
 # CHECK:    $cr2lt = CROR $cr0gt, $cr0gt
 # CHECK:    renamable $x3 = LIS8 4096
 # CHECK:    MTLR8 $x0, implicit-def $lr8
-# CHECK:    BCLRn $cr2lt, implicit $lr8, implicit $rm, implicit $x3
-# CHECK:    BCLR $cr2lt, implicit $lr8, implicit $rm, implicit $x3
-
+# CHECK:    BLR8 implicit $lr8, implicit $rm, implicit $x3
 
